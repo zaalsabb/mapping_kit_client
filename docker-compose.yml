@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  ig3:
+    image: mapping_kit-ig3  
+    network_mode: "host"
+    volumes:
+        - $HOME/datasets/:/datasets/
+        - /dev:/dev
+    restart: always 
+    privileged: true
+
