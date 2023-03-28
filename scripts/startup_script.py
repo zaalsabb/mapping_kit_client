@@ -86,7 +86,7 @@ def check_cpu_temp():
     cpu = Cpu(monitoring_latency=1)
     if cpu.temperature > 90:
         if current_status == "":
-            current_status = "CPU overheating issue!"
+            current_status = "WARNING: Backpack computer overheating!!"
 
     with open(log_fname, 'a') as f:
         f.write(ct+' cpu temperature:'+str(cpu.temperature)+'\n')
