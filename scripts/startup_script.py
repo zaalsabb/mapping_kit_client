@@ -81,7 +81,7 @@ def copy_files(local_dir, media_drive):
 @scheduler.task('interval', [cpu], id='check_cpu_temp', seconds=1) # every second
 def check_cpu_temp(cpu):
     global log_fname
-    ct = datetime.datetime.now()
+    ct = str(datetime.datetime.now())
     with open(log_fname, 'a') as f:
         f.write(ct+' cpu temperature:'+str(cpu.temperature)+'\n')
 
