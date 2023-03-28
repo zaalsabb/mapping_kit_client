@@ -8,7 +8,6 @@ import flask
 from flask_apscheduler import APScheduler
 
 from pyspectator.processor import Cpu
-cpu = Cpu(monitoring_latency=1)
 
 app = flask.Flask(__name__)
 scheduler = APScheduler()
@@ -78,10 +77,11 @@ def copy_files(local_dir, media_drive):
                 print(e)
                 current_status = "ERROR: bag file was not copied to USB drive!"
  
-@scheduler.task('interval', [cpu], id='check_cpu_temp', seconds=1) # every second
-def check_cpu_temp(cpu):
+@scheduler.task('interval', id='check_cpu_temp', seconds=1) # every second
+def check_cpu_temp():
     global log_fname
     ct = str(datetime.datetime.now())
+    cpu = Cpu(monitoring_latency=1)
     with open(log_fname, 'a') as f:
         f.write(ct+' cpu temperature:'+str(cpu.temperature)+'\n')
 
