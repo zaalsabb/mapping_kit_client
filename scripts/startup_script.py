@@ -2,6 +2,7 @@
 import sys
 import os
 import time
+import datetime
 import shutil
 import flask
 from flask_apscheduler import APScheduler
@@ -77,11 +78,12 @@ def copy_files(local_dir, media_drive):
                 print(e)
                 current_status = "ERROR: bag file was not copied to USB drive!"
  
-@scheduler.task('interval', cpu, id='check_cpu_temp', seconds=1) # every second
+@scheduler.task('interval', [cpu], id='check_cpu_temp', seconds=1) # every second
 def check_cpu_temp(cpu):
     global log_fname
+    ct = datetime.datetime.now()
     with open(log_fname, 'a') as f:
-        f.write(str(cpu.temperature)+'\n')
+        f.write(ct+' cpu temperature:'+str(cpu.temperature)+'\n')
 
 def get_file_size(filepath):           
     # open the file in read only           
