@@ -50,9 +50,9 @@ def copy_files(local_dir, media_drive):
         l_drives = os.listdir(media_drive)  
         if len(l_drives) == 0:
              current_status = "No USB drivers found!"
-        for _usb_dir in l_drives:
+        for local_usb_dir in l_drives:
             try:
-                usb_dir = os.path.join(media_drive,_usb_dir)
+                usb_dir = os.path.join(media_drive, local_usb_dir)
                 if not os.path.exists(usb_dir):
                     break
                 # get list of files
@@ -70,7 +70,7 @@ def copy_files(local_dir, media_drive):
                         # delete file from local system after it was copied
                         else:
                             os.remove(os.path.join(local_dir, fpath))   
-                    current_status = f"Bag files copied to {os.path.join(usb_dir, fpath)}!"
+                    current_status = f"Bag files copied to {os.path.join(local_usb_dir, fpath)}!"
                     prev_update_time = current_time
 
             except Exception as e:
@@ -80,8 +80,14 @@ def copy_files(local_dir, media_drive):
 @scheduler.task('interval', id='check_cpu_temp', seconds=1) # every second
 def check_cpu_temp():
     global log_fname
+    global current_status
+
     ct = str(datetime.datetime.now())
     cpu = Cpu(monitoring_latency=1)
+    if cpu.temperature > 90:
+        if current_status == "":
+            current_status = "CPU overheating issue!"
+
     with open(log_fname, 'a') as f:
         f.write(ct+' cpu temperature:'+str(cpu.temperature)+'\n')
 
