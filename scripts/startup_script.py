@@ -6,6 +6,9 @@ import shutil
 import flask
 from flask_apscheduler import APScheduler
 
+from pyspectator.processor import Cpu
+cpu = Cpu(monitoring_latency=1)
+
 app = flask.Flask(__name__)
 scheduler = APScheduler()
 scheduler.init_app(app)
@@ -17,8 +20,10 @@ timeout = 10
 
 global current_status
 global prev_update_time
+global log_fname
 current_status = ""
 prev_update_time = time.time()
+log_fname = '/tmp/ig3_log.txt'
 
 @app.route("/check_status", methods=["GET"])
 def check_status():
@@ -72,7 +77,11 @@ def copy_files(local_dir, media_drive):
                 print(e)
                 current_status = "ERROR: bag file was not copied to USB drive!"
  
-
+@scheduler.task('interval', cpu, id='check_cpu_temp', seconds=1) # every second
+def check_cpu_temp(cpu):
+    global log_fname
+    with open(log_fname, 'a') as f:
+        f.write(str(cpu.temperature)+'\n')
 
 def get_file_size(filepath):           
     # open the file in read only           
