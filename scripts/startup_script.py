@@ -49,7 +49,7 @@ def copy_files(local_dir, media_drive):
         # check usb names in media drive
         l_drives = os.listdir(media_drive)  
         if len(l_drives) == 0:
-             current_status = "No USB drivers found!"
+             current_status = "ERROR: No USB drivers found!"
         for local_usb_dir in l_drives:
             try:
                 usb_dir = os.path.join(media_drive, local_usb_dir)
