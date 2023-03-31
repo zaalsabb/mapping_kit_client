@@ -70,7 +70,7 @@ def copy_files(local_dir, media_drive):
                         # delete file from local system after it was copied
                         else:
                             os.remove(os.path.join(local_dir, fpath))   
-                    current_status = f"Bag files copied to {os.path.join(local_usb_dir, fpath)}!"
+                    current_status = f"Bag file copied to {os.path.join(local_usb_dir, fpath)}!"
                     prev_update_time = current_time
 
             except Exception as e:
