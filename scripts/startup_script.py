@@ -24,6 +24,7 @@ global log_fname
 current_status = ""
 prev_update_time = time.time()
 log_fname = '/tmp/ig3_log.txt'
+#log_fname = '/home/ig3/ig3_log.txt'
 
 @app.route("/check_status", methods=["GET"])
 def check_status():
@@ -84,7 +85,7 @@ def check_cpu_temp():
 
     ct = str(datetime.datetime.now())
     cpu = Cpu(monitoring_latency=1)
-    if cpu.temperature > 90:
+    if cpu.temperature > 95:
         if current_status == "":
             current_status = "WARNING: Backpack computer overheating!!"
 
