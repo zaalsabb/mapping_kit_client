@@ -85,7 +85,7 @@ def check_cpu_temp():
 
     ct = str(datetime.datetime.now())
     cpu = Cpu(monitoring_latency=1)
-    if cpu.temperature > 95:
+    if cpu.temperature > 100:
         if current_status == "":
             current_status = "WARNING: Backpack computer overheating!!"
 
