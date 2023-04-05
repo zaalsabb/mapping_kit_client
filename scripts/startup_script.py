@@ -61,16 +61,20 @@ def copy_files(local_dir, media_drive):
                 l_files = [fpath for fpath in l_files if fpath.split('.')[-1] == 'bag']
                 if len(l_files) > 0:
                     for fpath in l_files: 
-                        # copy bag files
+                        # copy bag file if it does not exist on usb already
                         if not os.path.exists(os.path.join(usb_dir, fpath)):
-                            shutil.copy(os.path.join(local_dir, fpath), os.path.join(usb_dir, fpath))  
-                            # check that file was copied correctly 
-                            file_size = get_file_size(os.path.join(usb_dir, fpath))
-                            if file_size == 0:
-                                os.remove(os.path.join(usb_dir, fpath), ignore_errors=True)                         
-                        # delete file from local system after it was copied
+                            shutil.copy(os.path.join(local_dir, fpath), os.path.join(usb_dir, fpath))                                      
                         else:
-                            os.remove(os.path.join(local_dir, fpath))   
+                            # check that file was copied correctly                             
+                            file_size = get_file_size(os.path.join(usb_dir, fpath))
+                            if file_size > 0:                      
+                                # delete file from local system after it was copied      
+                                os.remove(os.path.join(local_dir, fpath))   
+                                pass
+                            else:
+                                # delete file from usb so it can be copied again
+                                os.remove(os.path.join(usb_dir, fpath))
+
                     current_status = f"Bag file copied to {os.path.join(local_usb_dir, fpath)}!"
                     prev_update_time = current_time
 
